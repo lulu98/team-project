@@ -18,7 +18,8 @@ another_runner:
     - rosversion -d
 
 # another runner with the tag "hohoho" is based on a dind image and his volume is connected to the Unix Socket to communicate with the docker daemon of local machine.
-# Therefore it can build images into the local docker image registry.
+# Therefore it can build images into the local docker image registry. It uses a Dockerfile sitting in gitlab repository.
+# How to differentiate between multiple Dockerfiles?
 build_image:
   tags:
     - hohoho
@@ -30,6 +31,7 @@ build_image:
 
 # The same runner is able to create containers on the local machine based on images of the local machine.
 # Furthermore it can instruct running containers to execute some command, like building a separate container.
+# Currently stage is stuck because container is running. Maybe execute command in background.
 deploy_image:
   tags:
     - hohoho
