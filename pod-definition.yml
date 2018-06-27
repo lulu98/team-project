@@ -1,0 +1,14 @@
+# file to create pods that represent different turtlesims
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: myrobots
+  labels:
+spec: 
+  replicas: 5
+  template: 
+    metadata: 
+    spec: 
+      containers: 
+        - name: my-robot
+        - image: ros or something
