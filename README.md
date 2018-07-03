@@ -1,4 +1,5 @@
 # Continuous Integration of Robotic Software  
+Prerequisites: Ubuntu, enough swap memory
 ## Introduction
 This README collects all the necessary information for our system, important files, commands and a list of steps to reproduce our system. To understand the technical aspects of our system, please refer to the design document.
 ## Done
@@ -12,8 +13,6 @@ This README collects all the necessary information for our system, important fil
 - using kubectl run on gitlab registry not working  
 ## Future Projects
 - monitor robots over GUI
-
-Prerequisites: Ubuntu, enough swap memory
 
 ## Important files 
 - /etc/docker/daemon.json        	-> lists insecure registries that should be allowed  
@@ -45,6 +44,7 @@ change /etc/gitlab/gitlab.rb file and/or docker-compose up
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
 - initialize cluster, join workers and make cluster recoverable  
 http://stytex.de/blog/2018/01/16/how-to-recover-self-hosted-kubeadm-kubernetes-cluster-after-reboot/  
+- if warning that docker version too hight, don't care but if error because of swap, turn if off with: sudo swapoff -a, kubeadm reset, initialize with kubeadm again  
 - connect cluster to gitlab  
 https://docs.gitlab.com/ee/user/project/clusters/  
 -> The system is now ready  
