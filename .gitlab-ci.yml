@@ -1,42 +1,60 @@
-# This script defines kind of a local CI/CD pipeline. Unfortunately it is very dependent on the local system on which the containers are situated.
 stages:
   - test
   - build
   - deploy
+variables:
+    IMAGE_TAG: "localhost:4567/root/firstproject"
+before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN http://localhost:4567
 
-# simulated testing stage, just for the sake of having a testing stage
-# the runner is based on a ros image and has the tag "asdlkjfkd" (sorry for that)
-another_runner:
-  tags:
-    - asdlkjfkd 
-  stage: test
-  script:
-    - pwd
-    - g++ main.cpp -o main
-    - ./main
-    - source /opt/ros/kinetic/setup.bash
-    - rosversion -d
+# another_runner:
+#  tags:
+#    - asdlkjfkd 
+#  stage: test
+#  script:
+#    - pwd
+#    - g++ main.cpp -o main
+#    - ./main
+#    - source /opt/ros/kinetic/setup.bash
+#    - rosversion -d
 
-# another runner with the tag "hohoho" is based on a dind image and his volume is connected to the Unix Socket to communicate with the docker daemon of local machine.
-# Therefore it can build images into the local docker image registry. It uses a Dockerfile sitting in gitlab repository.
-# How to differentiate between multiple Dockerfiles?
 build_image:
   tags:
     - hohoho
   stage: build
   script:
     - docker images
-    - docker build -t redis-server .
+    - docker build -t $IMAGE_TAG .
     - docker images
+    - docker push $IMAGE_TAG
 
-# The same runner is able to create containers on the local machine based on images of the local machine.
-# Furthermore it can instruct running containers to execute some command, like building a separate container.
-# Currently stage is stuck because container is running. Maybe execute command in background.
 deploy_image:
   tags:
     - hohoho
+#  image: lwolf/kubectl_deployer:latest
+# services:
+#   - docker:dind
   stage: deploy
   script:
-    - docker ps 
-    - docker exec -i my_nodes_master_node_1 docker run --name redis_instance -t redis-server
+# install kubectl 
+    - apt-get update && sudo apt-get install -y apt-transport-https
+    - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    - touch /etc/apt/sources.list.d/kubernetes.list 
+    - echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    - apt-get update
+    - apt-get install -y kubectl
+#    - docker build -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}" .
+#    - docker push "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}"
+# register kubectl to cluster
+    - kubectl config set-cluster my-cluster --server=”$KUBE_URL” --insecure-skip-tls-verify=true
+    - kubectl config set-credentials admin --token=”$KUBE_TOKEN”
+    - kubectl config set-context my-context --cluster=my-cluster --user=admin
+    - kubectl config use-context my-context
+#    - kubectl get cs
+#    - kubectl get pods 
+# deploy container based on gitlab registry image on cluster
+    - kubectl cluster-info
+    - kubectl run firstdeploy --image=$IMAGE_TAG --replicas=1
+#    - docker ps 
+#    - docker exec -id my_nodes_master_node_1 docker run --name redis_instance -t redis-server:latest
 
