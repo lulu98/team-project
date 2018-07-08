@@ -24,6 +24,7 @@ This README collects all the necessary information for our system, important fil
 ## Important tools 
 - Docker					-> Engine to build the container and therefore our whole system  
 - Docker-compose				-> can set up multiple containers in a specified file  
+- Docker swarm					-> integrated with docker to set up clusters (easier set up than Kubernetes)
 - Kubernetes with kubeadm,kubectl, kubelet	-> defines cluster of robots where application should be deployed  
 
 ## Steps to reproduce (maybe translate to installation and setup script):
@@ -40,6 +41,27 @@ https://docs.docker.com/compose/install/
 3. if runner not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab  
 - integrate gitlab registry  
 change /etc/gitlab/gitlab.rb file and/or docker-compose up  
+## Add ssh authentication
+- create key pair  
+- add public key under User settings -> ssh keys  
+For more information: https://docs.gitlab.com/ee/ssh/ 
+
+## Solution with Docker Swarm
+- initialize docker swarm: docker swarm init  
+- on master: docker swarm join-token worker -> use this command on worker to join cluster  
+- deploy service: docker service create --replicas 1 --name nameOfService nameOfImage command  
+- to update service: docker service update nameOfService  
+For more information: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ and follow links at bottom of page
+
+## Connect to Gitlab
+- for more convenience: add in /etc/hosts the line: (static) ip-address name  
+- add in /etc/docker/daemon.json the entry for insecure-registry for gitlab registry  
+- update docker engine: service docker restart  
+- (on master)update gitlab containers: docker-compose up  
+-> you can connect to gitlab over browser by typing: nameForIp:port -> register if not master -> master can add people to projects
+To use CI/CD push a Dockerfile plus resources and a .gitlab-ci.yml file to gitlab and hope it works
+
+## Solution with Kubernetes
 - install Kubernetes with kubeadm, kubectl, kubelet  
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
 - initialize cluster, join workers and make cluster recoverable  
@@ -48,4 +70,4 @@ http://stytex.de/blog/2018/01/16/how-to-recover-self-hosted-kubeadm-kubernetes-c
 - connect cluster to gitlab  
 https://docs.gitlab.com/ee/user/project/clusters/  
 -> The system is now ready  
-To use CI/CD push a Dockerfile plus resources and a .gitlab-ci.yml file to gitlab and hope it works
+Issue: no kubectl in docker service, kubectl not able to find DNS-server
