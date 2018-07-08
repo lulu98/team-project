@@ -1,3 +1,6 @@
+#        external_url 'http://teamproject:9090'
+#        registry_external_url 'http://teamproject:4567'
+
 version: "3"
 
 services:
@@ -6,9 +9,9 @@ services:
     restart: always
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://localhost:9090'
+        external_url 'http://master:9090'
         gitlab_rails['gitlab_shell_ssh_port'] = 10022
-        registry_external_url 'http://localhost:4567'
+        registry_external_url 'http://master:4567'
     ports:
       - '9090:9090'
       - '10022:22'
