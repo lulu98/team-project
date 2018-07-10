@@ -8,12 +8,15 @@ This README collects all the necessary information for our system, important fil
 - Gitlab registry  
 - Integration of Kubernetes cluster to Gitlab  
 - Deployment on cluster alone is working  
+- using docker swarm for deployment in Gitlab  
 ## Current activity  
-- using kubectl in .gitlab-ci.yml file and accessing cluster not working although setting context for kubectl  
-- using kubectl run on gitlab registry not working  
+- fix update delay of container deployment, if image changes  
+- how to connect to Gitlab instance from remote place -> currently using router to use same ip all the time  
+- deploying actual images using ROS software  
 ## Future Projects
 - monitor robots over GUI
-
+- using kubectl in .gitlab-ci.yml file and accessing cluster not working although setting context for kubectl  
+- using kubectl run on gitlab registry not working  
 ## Important files 
 - /etc/docker/daemon.json        	-> lists insecure registries that should be allowed  
 - /etc/gitlab/gitlab.rb		   	-> contains all configurations of gitlab (container)  
