@@ -35,6 +35,8 @@ This README collects all the necessary information for our system, important fil
 https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1  
 - Install docker-compose  
 https://docs.docker.com/compose/install/  
+- nmcli, use ip after inet4 -> this is ip that router gives to pc  
+- map this ip to some artificial name (in our case master), later we want to access gitlab instance over this ip but dont want to type ip all the time into the browser  
 - create docker-compose.yml file and start containers with docker-compose up (must be in same folder as docker-compose.yml file)  
 - type: master:7070 in browser and log in to Gitlab for first time  
 - follow advice of page to initialize and configure git on local machine  
@@ -57,9 +59,11 @@ Registering runner... succeeded                     runner=iGeFrZz7
 Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
 docker  
 Please enter the default Docker image (e.g. ruby:2.1):  
-dind  
+gitlab/dind  
 Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
+- find out network: docker network ls and search for network whose first part is called like the folder where docker-compose file is sitting, make docker network inspect this_network and look if gitlab and gitlab-runner container is in there  
 - change configuration for runner to work in ci pipeline  
+clone_url: clone_url = "http://gitlab:7070", network: network_mode = "tutorial_default", volume: volumes = ["/cache","/var/run/docker.sock:/var/run/docker.sock"]  
 - integrate gitlab registry  
 change /etc/gitlab/gitlab.rb file and/or docker-compose up  
 add insecure registries
