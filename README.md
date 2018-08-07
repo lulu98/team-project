@@ -36,14 +36,32 @@ https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 - Install docker-compose  
 https://docs.docker.com/compose/install/  
 - create docker-compose.yml file and start containers with docker-compose up (must be in same folder as docker-compose.yml file)  
-- type: localhost:9090 and log in to Gitlab for first time  
+- type: master:7070 and log in to Gitlab for first time  
 - follow advice of page to initialize and configure git on local machine  
 - register runner  
 1. go inside gitlab-runner container with: docker exec -it "name of container" bash  
 2. gitlab-runner register and follow advice: use image gitlab:dind for service dind, you can find token in gitlab container under Admin Area -> Runners or Settings -> CI/CD -> Runner settings  
-3. if runner not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab  
+3. if runner not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab
+root@8a6bdc06e08b:/# gitlab-runner register
+Running in system-mode.                            
+                                                   
+Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):
+http://gitlab:7070
+Please enter the gitlab-ci token for this runner:
+iGeFrZz7UrncT4oQDEg6
+Please enter the gitlab-ci description for this runner:
+[8a6bdc06e08b]: my-runner
+Please enter the gitlab-ci tags for this runner (comma separated):
+my-runner
+Registering runner... succeeded                     runner=iGeFrZz7
+Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:
+docker
+Please enter the default Docker image (e.g. ruby:2.1):
+dind
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
 - integrate gitlab registry  
 change /etc/gitlab/gitlab.rb file and/or docker-compose up  
+add insecure registries
 ## Add ssh authentication
 - create key pair  
 - add public key under User settings -> ssh keys  
