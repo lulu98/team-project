@@ -36,7 +36,7 @@ https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 - Install docker-compose  
 https://docs.docker.com/compose/install/  
 - nmcli, use ip after inet4 -> this is ip that router gives to pc  
-- map this ip to some artificial name (in our case master), later we want to access gitlab instance over this ip but dont want to type ip all the time into the browser  
+- map this ip to some artificial name (in our case master), later we want to access gitlab instance over this ip but dont want to type ip all the time into the browser, also on other machines in cluster  
 - create docker-compose.yml file and start containers with docker-compose up (must be in same folder as docker-compose.yml file)  
 - type: master:7070 in browser and log in to Gitlab for first time  
 - follow advice of page to initialize and configure git on local machine  
@@ -66,15 +66,17 @@ Runner registered successfully. Feel free to start it, but if it's running alrea
 clone_url: clone_url = "http://gitlab:7070", network: network_mode = "tutorial_default", volume: volumes = ["/cache","/var/run/docker.sock:/var/run/docker.sock"]  
 - integrate gitlab registry  
 change /etc/gitlab/gitlab.rb file and/or docker-compose up  
-add insecure registries
+add insecure registries in /etc/docker/daemon.json, also on other machines of cluster
+- push .gitlab-ci.yml, Dockerfile, other files used in Dockerfile and check pipeline out, when successful then check registry out  
 ## Add ssh authentication
-- create key pair  
+- create ssh key pair: https://docs.gitlab.com/ee/ssh/README.html  
 - add public key under User settings -> ssh keys  
 For more information: https://docs.gitlab.com/ee/ssh/ 
 
 ## Solution with Docker Swarm
 - initialize docker swarm: docker swarm init  
-- on master: docker swarm join-token worker -> use this command on worker to join cluster  
+- on master: docker swarm join-token worker -> use this command on worker to join cluster (you can copy this command in readme in gitlab, so that other people on team can join the cluster)  
+- if not working, maybe firewall issue: https://www.digitalocean.com/community/tutorials/how-to-configure-the-linux-firewall-for-docker-swarm-on-ubuntu-16-04  
 - deploy service: docker service create --replicas 1 --name nameOfService nameOfImage command  
 - to update service: docker service update nameOfService  
 For more information: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ and follow links at bottom of page
@@ -85,8 +87,11 @@ For more information: https://docs.docker.com/engine/swarm/swarm-tutorial/create
 - update docker engine: service docker restart  
 - (on master)update gitlab containers: docker-compose up  
 -> you can connect to gitlab over browser by typing: nameForIp:port -> register if not master -> master can add people to projects
+- master: got to project -> Settings -> Members
 To use CI/CD push a Dockerfile plus resources and a .gitlab-ci.yml file to gitlab and hope it works
-
+## On worker nodes
+- map ip of manager to artificial name  
+- set insecure registry
 ## Solution with Kubernetes
 - install Kubernetes with kubeadm, kubectl, kubelet  
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
