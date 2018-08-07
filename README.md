@@ -77,9 +77,13 @@ For more information: https://docs.gitlab.com/ee/ssh/
 - initialize docker swarm: docker swarm init  
 - on master: docker swarm join-token worker -> use this command on worker to join cluster (you can copy this command in readme in gitlab, so that other people on team can join the cluster)  
 - if not working, maybe firewall issue: https://www.digitalocean.com/community/tutorials/how-to-configure-the-linux-firewall-for-docker-swarm-on-ubuntu-16-04  
-- deploy service: docker service create --replicas 1 --name nameOfService nameOfImage command  
+- docker login from registry: docker login master:4567  
+- deploy service on swarm leader: docker service create --mode global --with-registry-auth --name ello master:4567/root/tutorial roscore   
 - to update service: docker service update nameOfService  
 For more information: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ and follow links at bottom of page
+
+## Test if working
+change a text file and let pipeline build image, and update service, changes will be deployed on every machine
 
 ## Connect to Gitlab
 - for more convenience: add in /etc/hosts the line: (static) ip-address name  
@@ -92,6 +96,13 @@ To use CI/CD push a Dockerfile plus resources and a .gitlab-ci.yml file to gitla
 ## On worker nodes
 - map ip of manager to artificial name  
 - set insecure registry
+
+## Monitoring solution
+clone already existing solution: https://github.com/stefanprodan/swarmprom 
+remember to set experimental to make prometheus work  
+enter prometheus over master:9090 and grafana over master:3000  
+log in with admin admin  
+
 ## Solution with Kubernetes
 - install Kubernetes with kubeadm, kubectl, kubelet  
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
