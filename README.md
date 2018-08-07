@@ -83,7 +83,9 @@ For more information: https://docs.gitlab.com/ee/ssh/
 For more information: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ and follow links at bottom of page
 
 ## Test if working
-change a text file and let pipeline build image, and update service, changes will be deployed on every machine
+change a text file and let pipeline build image, and update service, changes will be deployed on every machine  
+docker exec -it ello tab bash  
+cat hello.txt and look if changed
 
 ## Connect to Gitlab
 - for more convenience: add in /etc/hosts the line: (static) ip-address name  
@@ -95,10 +97,10 @@ change a text file and let pipeline build image, and update service, changes wil
 To use CI/CD push a Dockerfile plus resources and a .gitlab-ci.yml file to gitlab and hope it works
 ## On worker nodes
 - map ip of manager to artificial name  
-- set insecure registry
+- set insecure registry in daemon.json
 
 ## Monitoring solution
-clone already existing solution: https://github.com/stefanprodan/swarmprom 
+clone already existing solution: https://github.com/stefanprodan/swarmprom  
 remember to set experimental to make prometheus work  
 enter prometheus over master:9090 and grafana over master:3000  
 log in with admin admin  
