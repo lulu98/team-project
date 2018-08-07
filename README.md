@@ -102,6 +102,7 @@ clone already existing solution: https://github.com/stefanprodan/swarmprom
 remember to set experimental to make prometheus work  
 enter prometheus over master:9090 and grafana over master:3000  
 log in with admin admin  
+if one node not visible, could be because of strange version docker version
 
 ## Solution with Kubernetes
 - install Kubernetes with kubeadm, kubectl, kubelet  
