@@ -36,7 +36,7 @@ https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1
 - Install docker-compose  
 https://docs.docker.com/compose/install/  
 - create docker-compose.yml file and start containers with docker-compose up (must be in same folder as docker-compose.yml file)  
-- type: master:7070 and log in to Gitlab for first time  
+- type: master:7070 in browser and log in to Gitlab for first time  
 - follow advice of page to initialize and configure git on local machine  
 - register runner  
 1. go inside gitlab-runner container with: docker exec -it "name of container" bash  
@@ -59,6 +59,7 @@ docker
 Please enter the default Docker image (e.g. ruby:2.1):  
 dind  
 Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
+- change configuration for runner to work in ci pipeline  
 - integrate gitlab registry  
 change /etc/gitlab/gitlab.rb file and/or docker-compose up  
 add insecure registries
