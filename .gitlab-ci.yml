@@ -3,58 +3,24 @@ stages:
   - build
   - deploy
 variables:
-    IMAGE_TAG: "localhost:4567/root/firstproject"
+    IMAGE_TAG: "master:4567/root/tutorial"
 before_script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN http://localhost:4567
-
-# another_runner:
-#  tags:
-#    - asdlkjfkd 
-#  stage: test
-#  script:
-#    - pwd
-#    - g++ main.cpp -o main
-#    - ./main
-#    - source /opt/ros/kinetic/setup.bash
-#    - rosversion -d
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN http://master:4567
 
 build_image:
   tags:
-    - hohoho
+    - my-runner
   stage: build
   script:
-    - docker images
     - docker build -t $IMAGE_TAG .
-    - docker images
     - docker push $IMAGE_TAG
 
 deploy_image:
   tags:
-    - hohoho
-#  image: lwolf/kubectl_deployer:latest
-# services:
-#   - docker:dind
+    - my-runner
   stage: deploy
   script:
-# install kubectl 
-    - apt-get update && sudo apt-get install -y apt-transport-https
-    - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    - touch /etc/apt/sources.list.d/kubernetes.list 
-    - echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-    - apt-get update
-    - apt-get install -y kubectl
-#    - docker build -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}" .
-#    - docker push "$CI_REGISTRY_IMAGE:${CI_COMMIT_REF_SLUG}"
-# register kubectl to cluster
-    - kubectl config set-cluster my-cluster --server=”$KUBE_URL” --insecure-skip-tls-verify=true
-    - kubectl config set-credentials admin --token=”$KUBE_TOKEN”
-    - kubectl config set-context my-context --cluster=my-cluster --user=admin
-    - kubectl config use-context my-context
-#    - kubectl get cs
-#    - kubectl get pods 
-# deploy container based on gitlab registry image on cluster
-    - kubectl cluster-info
-    - kubectl run firstdeploy --image=$IMAGE_TAG --replicas=1
-#    - docker ps 
-#    - docker exec -id my_nodes_master_node_1 docker run --name redis_instance -t redis-server:latest
+    - docker service update --image $(docker inspect --type image --format '{{index .RepoDigests 0}}' $IMAGE_TAG:latest) ello
 
+  environment:
+    name: $CI_ENVIRONMENT_NAME
