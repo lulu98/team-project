@@ -53,7 +53,6 @@ https://docs.docker.com/compose/install/
     - The registration process should look like this:  
     root@8a6bdc06e08b:/# gitlab-runner register  
     Running in system-mode.                            
-                                                   
     Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
     http://gitlab:7070  
     Please enter the gitlab-ci token for this runner:  
@@ -70,11 +69,11 @@ https://docs.docker.com/compose/install/
     Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
 
 9. Now a runner is registered. But to use it in Gitlab, we still need to change some configuration for the registered runner:  
-- Find out the network on which gitlab is sitting with docker network ls and search for network whose first part is called like the folder where docker-compose file is sitting, make docker network inspect this_network and look if gitlab and gitlab-runner container is in there -> this is the network the registered runner needs to be registered to  
-- change configuration for runner to work in ci pipeline  
-clone_url: clone_url = "http://gitlab:7070"  
-network: network_mode = "tutorial_default" (in our case network is called tutorial_default)  
-volume: volumes = ["/cache","/var/run/docker.sock:/var/run/docker.sock"]  
+    - Find out the network on which gitlab is sitting with docker network ls and search for network whose first part is called like the folder where docker-compose file is sitting, make docker network inspect this_network and look if gitlab and gitlab-runner container is in there -> this is the network the registered runner needs to be registered to  
+    - change configuration for runner to work in ci pipeline  
+    clone_url: clone_url = "http://gitlab:7070"  
+    network: network_mode = "tutorial_default" (in our case network is called tutorial_default)  
+    volume: volumes = ["/cache","/var/run/docker.sock:/var/run/docker.sock"]  
 10. Integrate gitlab image registry  
 - The registry url is already set in the docker-compose file (you could also change line in gitlab.rb file)  
 - Add insecure registries in /etc/docker/daemon.json (also on other machines of cluster)  
