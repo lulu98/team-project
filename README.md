@@ -52,22 +52,37 @@ https://docs.docker.com/compose/install/
     - If runner is not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab
     - The registration process should look like this:  
     
-root@8a6bdc06e08b:/# gitlab-runner register  
-Running in system-mode.                            
-Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
-http://gitlab:7070  
-Please enter the gitlab-ci token for this runner:  
-iGeFrZz7UrncT4oQDEg6  
-Please enter the gitlab-ci description for this runner:  
-[8a6bdc06e08b]: my-runner  
-Please enter the gitlab-ci tags for this runner (comma separated):  
-my-runner  
-Registering runner... succeeded                     runner=iGeFrZz7  
-Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
-docker  
-Please enter the default Docker image (e.g. ruby:2.1):  
-gitlab/dind  
-Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
+	root@8a6bdc06e08b:/# gitlab-runner register  
+
+	Running in system-mode.                            
+
+	Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
+
+	http://gitlab:7070  
+
+	Please enter the gitlab-ci token for this runner:  
+
+	iGeFrZz7UrncT4oQDEg6  
+
+	Please enter the gitlab-ci description for this runner:  
+
+	[8a6bdc06e08b]: my-runner  
+
+	Please enter the gitlab-ci tags for this runner (comma separated):  
+
+	my-runner  
+
+	Registering runner... succeeded                     runner=iGeFrZz7  
+
+	Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
+
+	docker  
+
+	Please enter the default Docker image (e.g. ruby:2.1):  
+
+	gitlab/dind  
+
+	Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
 
 9. Now a runner is registered. But to use it in Gitlab, we still need to change some configuration for the registered runner:  
     - Find out the network on which gitlab is sitting with docker network ls and search for network whose first part is called like the folder where docker-compose file is sitting, make docker network inspect this_network and look if gitlab and gitlab-runner container is in there -> this is the network the registered runner needs to be registered to  
