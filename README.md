@@ -51,22 +51,23 @@ https://docs.docker.com/compose/install/
     - once inside container type: gitlab-runner register and follow advice: use image gitlab:dind for service dind, you can find token in gitlab container under Admin Area -> Runners or Settings -> CI/CD -> Runner settings  
     - If runner is not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab
     - The registration process should look like this:  
-    root@8a6bdc06e08b:/# gitlab-runner register  
-    Running in system-mode.                            
-    Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
-    http://gitlab:7070  
-    Please enter the gitlab-ci token for this runner:  
-    iGeFrZz7UrncT4oQDEg6  
-    Please enter the gitlab-ci description for this runner:  
-    [8a6bdc06e08b]: my-runner  
-    Please enter the gitlab-ci tags for this runner (comma separated):  
-    my-runner  
-    Registering runner... succeeded                     runner=iGeFrZz7  
-    Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
-    docker  
-    Please enter the default Docker image (e.g. ruby:2.1):  
-    gitlab/dind  
-    Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
+    
+root@8a6bdc06e08b:/# gitlab-runner register  
+Running in system-mode.                            
+Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
+http://gitlab:7070  
+Please enter the gitlab-ci token for this runner:  
+iGeFrZz7UrncT4oQDEg6  
+Please enter the gitlab-ci description for this runner:  
+[8a6bdc06e08b]: my-runner  
+Please enter the gitlab-ci tags for this runner (comma separated):  
+my-runner  
+Registering runner... succeeded                     runner=iGeFrZz7  
+Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
+docker  
+Please enter the default Docker image (e.g. ruby:2.1):  
+gitlab/dind  
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
 
 9. Now a runner is registered. But to use it in Gitlab, we still need to change some configuration for the registered runner:  
     - Find out the network on which gitlab is sitting with docker network ls and search for network whose first part is called like the folder where docker-compose file is sitting, make docker network inspect this_network and look if gitlab and gitlab-runner container is in there -> this is the network the registered runner needs to be registered to  
@@ -78,13 +79,18 @@ https://docs.docker.com/compose/install/
 - The registry url is already set in the docker-compose file (you could also change line in gitlab.rb file)  
 - Add insecure registries in /etc/docker/daemon.json (also on other machines of cluster)  
 - Restart docker engine: sudo service docker restart  
-11. Other machines can connect to Gitlab instance over browser: Type master:7070 in browser and register to gitlab -> master can add people to project and assign rank (As administrator: Go to project -> Settings -> Members -> Add registered machines)  
+11. Other machines can connect to Gitlab instance over browser:  
+Type master:7070 in browser and register to gitlab -> master can add people to project and assign rank (As administrator: Go to project -> Settings -> Members -> Add registered machines)  
 12. Push .gitlab-ci.yml, Dockerfile and other files used in Dockerfile to Gitlab and check pipeline out: Pipeline will fail on second job but image should be pushed on first stage -> check out image registry  
 13. Initialize Docker Swarm cluster: docker swarm init  
-14. Find out join command for other machines: docker swarm join-token worker (on master) -> use this command on worker to join cluster (you can copy this command in readme in gitlab, so that other people on team can join the cluster)  
-15. If this is not working, maybe there is a firewall issue, so you have to open ports: https://www.digitalocean.com/community/tutorials/how-to-configure-the-linux-firewall-for-docker-swarm-on-ubuntu-16-04  
-16. Log in to gitlab registry to pull and push to image: docker login master:4567  
-17. Deploy/Create service on swarm leader onto the cluster: docker service create --mode global --with-registry-auth --name ello master:4567/root/tutorial roscore (we will update service from within the .gitlab-ci.yml file)  
+14. Find out join command for other machines:  
+docker swarm join-token worker (on master) -> use this command on worker to join cluster (you can copy this command in readme in gitlab, so that other people on team can join the cluster)  
+15. If this is not working, maybe there is a firewall issue, so you have to open ports:  
+https://www.digitalocean.com/community/tutorials/how-to-configure-the-linux-firewall-for-docker-swarm-on-ubuntu-16-04  
+16. Log in to gitlab registry to pull and push to image:  
+docker login master:4567  
+17. Deploy/Create service on swarm leader onto the cluster (we will update service from within the .gitlab-ci.yml file):  
+docker service create --mode global --with-registry-auth --name ello master:4567/root/tutorial roscore  
 For more information on Docker Swarm: https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/ and follow links at bottom of page  
 18. Restart pipeline again and check if both jobs are completed  
 19. Congratulations: You achieved Continuous Deployment!
