@@ -53,33 +53,25 @@ https://docs.docker.com/compose/install/
     - The registration process should look like this:  
     
 	root@8a6bdc06e08b:/# gitlab-runner register  
-
 	Running in system-mode.                            
 
 	Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
-
 	http://gitlab:7070  
 
 	Please enter the gitlab-ci token for this runner:  
-
 	iGeFrZz7UrncT4oQDEg6  
 
 	Please enter the gitlab-ci description for this runner:  
-
 	[8a6bdc06e08b]: my-runner  
 
 	Please enter the gitlab-ci tags for this runner (comma separated):  
-
 	my-runner  
 
 	Registering runner... succeeded                     runner=iGeFrZz7  
-
 	Please enter the executor: docker-ssh, ssh, docker, shell, virtualbox, docker+machine, docker-ssh+machine, kubernetes, parallels:  
-
 	docker  
 
 	Please enter the default Docker image (e.g. ruby:2.1):  
-
 	gitlab/dind  
 
 	Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!  
