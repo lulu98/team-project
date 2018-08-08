@@ -47,12 +47,12 @@ https://docs.docker.com/compose/install/
 6. type: master:7070 in browser and log in to Gitlab for first time (may take a while to pull images and start containers)  
 7. Create a project and initialize a git repository to pull and push to remote gitlab repository, just follow the advice of gitlab page to initialize and configure git on local machine  
 8. Register runner  
-- Go inside gitlab-runner container with: docker exec -it "name of container" bash (to find out name of container type docker ps and look for some name with gitlab-runner in it)  
-- once inside container type: gitlab-runner register and follow advice: use image gitlab:dind for service dind, you can find token in gitlab container under Admin Area -> Runners or Settings -> CI/CD -> Runner settings  
-- If runner is not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab
-- The registration process should look like this:  
-root@8a6bdc06e08b:/# gitlab-runner register  
-Running in system-mode.                            
+    - Go inside gitlab-runner container with: docker exec -it "name of container" bash (to find out name of container type docker ps and look for some name with gitlab-runner in it)  
+    - once inside container type: gitlab-runner register and follow advice: use image gitlab:dind for service dind, you can find token in gitlab container under Admin Area -> Runners or Settings -> CI/CD -> Runner settings  
+    - If runner is not available in gitlab check clone_url, network_mode, volume in .docker-compose.yml and /etc/gitlab-runner/config.toml inside gitlab
+    - The registration process should look like this:  
+    root@8a6bdc06e08b:/# gitlab-runner register  
+    Running in system-mode.                            
                                                    
     Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):  
     http://gitlab:7070  
