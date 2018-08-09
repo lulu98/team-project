@@ -1,6 +1,14 @@
 # Continuous Integration of Robotic Software
 
-Project by: Lukas Graber, (insert name here)
+Project by: Lukas Graber, (insert name here) under Prof. Dr. Giovanni Beltrame
+
+##TODO for Team
+
+- insert your names at top of readme file  
+- you can try to make additional text file, that contains the steps and send it to the Professor  
+- Try to reproduce it yourself and change the readme file if something is unclear  
+- If you can reproduce, you can even make a tutorial video and put it on youtube and put the link on here, but that might be overkill  
+- Before deadline remove these TODO lines from README
 
 ## Introduction
 This project may be a first step on designing a system for Continuous Integration of Robotic Software for professional use cases. In this README we collect all the necessary information for our system, important files, commands and a list of steps to reproduce our system. For more information on the setup, please refer to the final elaboration pdf.
@@ -120,10 +128,10 @@ All the machines that should be part of the cluster and do not have gitlab runni
 ## Test if everthing is working
 - Check if container is deployed: docker ps and look for some container called ello  
 - Go inside container: docker exec -it "name of container" bash  
-- Print hello.txt: cat hello.txt  
+- Print hello.txt (when inside container): cat hello.txt  
 - Change hello.txt in gitlab and let pipeline build image, and update service, changes will be deployed on every machine  
 - Check again the hello.txt file: docker exec -it "name of container" bash (to get name of container you can just type ello and then push tab then auto-completion)  
-- Print hello.txt: cat hello.txt and look if changed  
+- Print hello.txt (when inside container): cat hello.txt and look if changed  
 - Type in browser master:9090 to enter Prometheus and master:3000 to enter Grafana and check if monitoring is working 
 
 ## Add ssh authentication
@@ -133,6 +141,7 @@ To make your workflow faster you can add ssh key authentication for Gitlab. Afte
 For more information: https://docs.gitlab.com/ee/ssh/ 
 
 ## Approach with Kubernetes
+This approach is currently not working properly. If someone wants to pick up our system and use Kubernetes, feel free to use this as a starting guide.  
 - install Kubernetes with kubeadm, kubectl, kubelet  
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
 - initialize cluster, join workers and make cluster recoverable  
