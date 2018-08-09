@@ -1,5 +1,7 @@
 # Continuous Integration of Robotic Software
 
+Project by: Lukas Graber, (insert name here)
+
 ## Introduction
 This project may be a first step on designing a system for Continuous Integration of Robotic Software for professional use cases. In this README we collect all the necessary information for our system, important files, commands and a list of steps to reproduce our system. For more information on the setup, please refer to the final elaboration pdf.
 
