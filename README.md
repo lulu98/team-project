@@ -2,7 +2,7 @@
 
 Project by: Lukas Graber, (insert name here) under Prof. Dr. Giovanni Beltrame
 
-##TODO for Team
+## TODO for Team
 
 - insert your names at top of readme file  
 - you can try to make additional text file, that contains the steps and send it to the Professor  
