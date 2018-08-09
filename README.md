@@ -130,7 +130,7 @@ To make your workflow faster you can add ssh key authentication for Gitlab. Afte
 - Add public key to Gitlab: User settings -> ssh keys  
 For more information: https://docs.gitlab.com/ee/ssh/ 
 
-## Solution with Kubernetes
+## Approach with Kubernetes
 - install Kubernetes with kubeadm, kubectl, kubelet  
 https://kubernetes.io/docs/tasks/tools/install-kubeadm/  
 - initialize cluster, join workers and make cluster recoverable  
